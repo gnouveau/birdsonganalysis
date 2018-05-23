@@ -29,7 +29,7 @@ def set_med_mad(med_, mad_):
 
 
 def get_windows(song, fft_step=None, fft_size=None):
-    r"""
+    """
     Build the windows of the song for analysis.
 
     The windows are separeted by
