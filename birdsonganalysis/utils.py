@@ -51,6 +51,7 @@ def get_windows(song, fft_step=None, fft_size=None):
         fft_step = 40
     if fft_size is None:
         fft_size = 1024
+    # keep this normalization (done in SAT)
     song = np.array(song, dtype=np.double)
     song = 2*song / (np.max(song) - np.min(song))
     size = len(song)
@@ -89,6 +90,26 @@ def normalize_features(song_features):
     for fname in song_features:
         adj_song_features[fname] = ((song_features[fname] - med[fname])
                                     / mad[fname])
+        adj_song_features[fname][np.isnan(adj_song_features[fname])] = 0
+
+    return adj_song_features
+
+
+def rescaling_with_tutor_values(tutor_features, song_features):
+    """
+    Rescale the values in song_features in relation to the tutor_features values
+    
+    For each feature,
+    Define the parameters which allow to normalize the tutor values between 0 and 1
+    Rescale the values of song_features using the "tutor based normalization "
+    transformation
+    """
+    adj_song_features = dict()
+    for fname in song_features:
+        min_val = np.min(tutor_features[fname])
+        max_val = np.max(tutor_features[fname])
+        range_val = max_val - min_val 
+        adj_song_features[fname] = (song_features[fname] - min_val) / range_val
         adj_song_features[fname][np.isnan(adj_song_features[fname])] = 0
 
     return adj_song_features
