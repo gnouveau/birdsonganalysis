@@ -9,6 +9,7 @@ import matplotlib.patches as p
 import matplotlib.pyplot as plt
 
 from .songfeatures import spectral_derivs
+from .constants import FREQ_RANGE
 
 
 def spectral_derivs_plot(spec_der, contrast=0.1, ax=None, freq_range=None,
@@ -34,7 +35,7 @@ def spectral_derivs_plot(spec_der, contrast=0.1, ax=None, freq_range=None,
     return ax
 
 
-def plot_over_spec(data, ax, freq_range=256, **plot_params):
+def plot_over_spec(data, ax, freq_range=FREQ_RANGE, **plot_params):
     """
     Plot the feature over a spectral derivatives plot.
 

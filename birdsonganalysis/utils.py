@@ -1,7 +1,7 @@
 """Utility functions for birdsonganalysis."""
 
 import numpy as np
-
+from .constants import FFT_STEP, FFT_SIZE
 
 # TODO med and mad should be easily changeable
 med = {
@@ -48,9 +48,9 @@ def get_windows(song, fft_step=None, fft_size=None):
     ```
     """
     if fft_step is None:
-        fft_step = 40
+        fft_step = FFT_STEP
     if fft_size is None:
-        fft_size = 1024
+        fft_size = FFT_SIZE
     # keep this normalization (done in SAT)
     song = np.array(song, dtype=np.double)
     song = 2*song / (np.max(song) - np.min(song))
@@ -106,13 +106,18 @@ def rescaling_with_tutor_values(tutor_features, song_features):
     """
     adj_song_features = dict()
     for fname in song_features:
-        min_val = np.min(tutor_features[fname])
-        max_val = np.max(tutor_features[fname])
-        range_val = max_val - min_val 
-        adj_song_features[fname] = (song_features[fname] - min_val) / range_val
-        adj_song_features[fname][np.isnan(adj_song_features[fname])] = 0
-
+        adj_song_features[fname] = rescaling_one_feature(tutor_features[fname],
+                                                         song_features[fname])
     return adj_song_features
+
+def rescaling_one_feature(tutor_feature, song_feature):
+    """Rescale on specific feature."""
+    min_val = np.min(tutor_feature)
+    max_val = np.max(tutor_feature)
+    range_val = max_val - min_val
+    res = (song_feature - min_val) / range_val
+    res[np.isnan(res)] = 0
+    return res
 
 
 def calc_dist_features(feats1, feats2, feat_names=None):

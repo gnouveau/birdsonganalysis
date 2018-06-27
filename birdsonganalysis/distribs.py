@@ -15,9 +15,9 @@ import datetime
 from birdsonganalysis.utils import get_windows, normalize_features, \
                                    calc_dist_features
 from birdsonganalysis.songfeatures import all_song_features, song_amplitude
+from .constants import SR
 
-
-def get_distribs(songs, samplerate=44100, T=70, verbose=True):
+def get_distribs(songs, samplerate=SR, T=70, verbose=True):
     allG = np.array([], dtype=float)
     allL = np.array([], dtype=float)
     total = len(list(it.combinations(songs, 2)))
