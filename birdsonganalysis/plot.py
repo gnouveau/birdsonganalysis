@@ -13,7 +13,7 @@ from .constants import FREQ_RANGE
 
 
 def spectral_derivs_plot(spec_der, contrast=0.1, ax=None, freq_range=None,
-                         ov_params=None):
+                         fft_step=None, fft_size=None):
     """
     Plot the spectral derivatives of a song in a grey scale.
 
@@ -27,15 +27,15 @@ def spectral_derivs_plot(spec_der, contrast=0.1, ax=None, freq_range=None,
     ov_params - The Parameters to override, passed to `spectral_derivs`
     """
     if spec_der.ndim == 1:
-        spec_der = spectral_derivs(spec_der, freq_range, ov_params)
-    ax = sns.heatmap(spec_der.T, yticklabels=100, xticklabels=100,
+        spec_der = spectral_derivs(spec_der, freq_range, fft_step, fft_size)
+    ax = sns.heatmap(spec_der.T, yticklabels=50, xticklabels=50,
                      vmin=-contrast, vmax=contrast, ax=ax, cmap='Greys',
                      cbar=False)
     ax.invert_yaxis()
     return ax
 
 
-def plot_over_spec(data, ax, freq_range=FREQ_RANGE, **plot_params):
+def plot_over_spec(data, ax, freq_range=FREQ_RANGE, zoom=1, **plot_params):
     """
     Plot the feature over a spectral derivatives plot.
 
@@ -45,7 +45,8 @@ def plot_over_spec(data, ax, freq_range=FREQ_RANGE, **plot_params):
     ndata = (data - np.nanmin(data)) / (np.nanmax(data) - np.nanmin(data))
     # We take for abscisse axis the line corresponding to 5% of freq_range
     # We rescale the data so that they take 75% of the graph
-    ax.plot(5/100 * freq_range + 75/100 * freq_range * ndata, **plot_params)
+    ax.plot(zoom * (5/100 * freq_range + 75/100 * freq_range * ndata),
+            **plot_params)
     return ax
 
 

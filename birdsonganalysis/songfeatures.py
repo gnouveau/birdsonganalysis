@@ -13,7 +13,7 @@ from aubio import pitch as aubio_pitch
 import libtfr
 
 from .utils import get_windows, cepstrum
-from .constants import FREQ_RANGE
+from .constants import FREQ_RANGE, FFT_STEP, FFT_SIZE
 
 EPS = np.finfo(np.double).eps
 dir_path = os.path.dirname(os.path.realpath(__file__))
@@ -160,6 +160,10 @@ def spectral_derivs(song, freq_range=None, fft_step=None, fft_size=None):
     """
     if freq_range is None:
         freq_range = FREQ_RANGE
+    if fft_step is None:
+        fft_step = FFT_STEP
+    if fft_size is None:
+        fft_size = FFT_SIZE
     windows = get_windows(song, fft_step, fft_size)
     nb_windows = windows.shape[0]
     td = np.zeros((nb_windows, freq_range))
