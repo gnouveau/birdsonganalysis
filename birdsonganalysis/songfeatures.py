@@ -214,7 +214,7 @@ def song_pitch(song, sr, threshold=None, freq_range=None, fft_step=None,
                fft_size=None):
     """Return an array of pitch values for the whole song."""
     if threshold is None:
-        threshold = 0.8
+        threshold = 0.9
     windows = get_windows(song, fft_step, fft_size)
     nb_windows = windows.shape[0]
     win_s = windows.shape[1]
@@ -278,6 +278,8 @@ def all_song_features(song, sr, pitch_method=None,
         out['fm'][i] = frequency_modulation(Z, freq_range)
         out['amplitude'][i] = amplitude(P, freq_range)
         out['entropy'][i] = wiener_entropy(P, freq_range)
+        # TODO: rms a tester
+        out['rms'][i] = rms(window)
         if pitch_method == 'fft':
             out['pitch'][i] = np.argmax(P[0:freq_range])/len(P) * sr
     if pitch_method != 'fft':
@@ -286,3 +288,7 @@ def all_song_features(song, sr, pitch_method=None,
         silent_th = np.percentile(out['amplitude'], 20)
         out['pitch'][out['amplitude'] < silent_th] = 0
     return out
+
+
+def rms(song):
+    return np.sqrt(np.mean(song ** 2))
