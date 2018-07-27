@@ -278,7 +278,6 @@ def all_song_features(song, sr, pitch_method=None,
         out['fm'][i] = frequency_modulation(Z, freq_range)
         out['amplitude'][i] = amplitude(P, freq_range)
         out['entropy'][i] = wiener_entropy(P, freq_range)
-        # TODO: rms a tester
         out['rms'][i] = rms(window)
         if pitch_method == 'fft':
             out['pitch'][i] = np.argmax(P[0:freq_range])/len(P) * sr
