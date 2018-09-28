@@ -131,9 +131,9 @@ def amplitude(power, freq_range=None):
     """
     if freq_range is None:
         freq_range = FREQ_RANGE
-    logsum = np.sum(power[9:freq_range])
+    logsum = np.sum(power[9:freq_range])  # 9 is a value from SAT code
     if logsum > 0:
-        return 10*(np.log10(logsum)+7)
+        return 10*(np.log10(logsum)+7)  # 7 is a value from SAT code
     else:
         return 0
 

@@ -34,7 +34,7 @@ def get_windows(song, fft_step=None, fft_size=None):
 
     The windows are separeted by
     `fft_step` and are of the size `fft_size`. The windows are centered on the
-    actual fft_step. Therefore, with default parameters, they go
+    actual fft_step. Therefore, with fft_size = 800 and fft_step = 40, they go
     song[-400:399] (centered on 0); song[-360:439] (centered on 40); etc.
     out of range indices (including negative indices) are filled with zeros.
     For example, the first window will be
